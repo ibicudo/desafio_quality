@@ -1,6 +1,7 @@
 package com.example.desafio_quality.desafio_quality.Services;
 
 import com.example.desafio_quality.desafio_quality.DTOs.HouseAreaDTO;
+import com.example.desafio_quality.desafio_quality.DTOs.RoomAreaDTO;
 import com.example.desafio_quality.desafio_quality.models.House;
 import com.example.desafio_quality.desafio_quality.models.Room;
 import com.example.desafio_quality.desafio_quality.repositories.CalculatorRepository;
@@ -61,13 +62,8 @@ public class CalculatorServiceTest {
     @Test
     void shouldCalculateRightTotalArea() throws Exception{
         //Arrange
-        Double area = 0.0;
-        List<Room> listRooms = this.house.getRooms();
-        for(Room room : listRooms){
-            area = area + room.getLength()*room.getWidth();
-        }
         HouseAreaDTO houseAreaExpeted = new HouseAreaDTO();
-        houseAreaExpeted.setArea(area);
+        houseAreaExpeted.setArea(48.0);
         houseAreaExpeted.setName(this.house.getName());
 
         Mockito.when(calculatorRepository.calculateArea(Mockito.any(House.class))).thenReturn(houseAreaExpeted);
@@ -95,6 +91,40 @@ public class CalculatorServiceTest {
         //Assert
         Assertions.assertNotEquals(houseAreaExpeted.getArea() , houseAreaCalculated.getArea());
 
+    }
+
+    @Test
+    void shouldDetermineRightRoom() {
+        //Arrange
+        RoomAreaDTO roomAreaDTOExpected = new RoomAreaDTO();
+        roomAreaDTOExpected.setArea(20.0);
+        roomAreaDTOExpected.setName(this.house.getRooms().get(1).getName());
+
+        Mockito.when(calculatorRepository.determineTheBiggestRoom(Mockito.any(House.class))).thenReturn(roomAreaDTOExpected);
+
+        //act
+        RoomAreaDTO roomAreaDTOCalculated = calculatorService.determineTheBiggestRoom(this.house);
+
+        //Assert
+        Assertions.assertEquals(roomAreaDTOExpected.getName(), roomAreaDTOCalculated.getName());
+        Assertions.assertEquals(roomAreaDTOExpected.getArea(), roomAreaDTOCalculated.getArea());
+    }
+
+    @Test
+    void shouldDetermineWrongRoom() {
+        //Arrange
+        RoomAreaDTO roomAreaDTOExpected = new RoomAreaDTO();
+        roomAreaDTOExpected.setArea(10.0);
+        roomAreaDTOExpected.setName("sala");
+
+        Mockito.when(calculatorRepository.determineTheBiggestRoom(Mockito.any(House.class))).thenReturn(roomAreaDTOExpected);
+
+        //act
+        RoomAreaDTO roomAreaDTOCalculated = calculatorService.determineTheBiggestRoom(this.house);
+
+        //Assert
+        Assertions.assertNotEquals(roomAreaDTOExpected.getArea(), roomAreaDTOCalculated.getArea());
+        Assertions.assertNotEquals(roomAreaDTOExpected.getName(), roomAreaDTOCalculated.getName());
     }
 
 
