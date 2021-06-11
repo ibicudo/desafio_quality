@@ -1,7 +1,9 @@
 package com.example.desafio_quality.desafio_quality.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 
@@ -9,17 +11,25 @@ import java.util.List;
 public class House {
 
     @NotNull
+    @NotBlank
     @NotEmpty(message = "O nome da propriedade não pode estar vazio.")
     @Size(max=30 , message="O comprimento do nome não pode exceder 30 caracteres.")
-    @Pattern(regexp = "[A-Z][a-z]+", message = "O nome da propriedade deve começar com uma letra maiúscula")
+    @Pattern(regexp = "[A-Z].*", message = "O nome da propriedade deve começar com uma letra maiúscula")
     private String name;
 
     @NotNull
+    @NotBlank
     @NotEmpty(message = "O bairro não pode estar vazio.")
     @Size(max=45 , message="O comprimento do bairro não pode exceder 45 caracteres.")
     private String district;
 
-    private List<Room> room;
+    @Valid
+    @NotNull(message = "É necessário ter uma lista de cômodos")
+    @Size(min = 1, message = "É necessário ter pelo menos um cômodo na lista")
+    private List<Room> rooms;
+
+    @JsonIgnore
+    private Double valueByDistricts;
 
     public House() {
     }
@@ -40,11 +50,20 @@ public class House {
         this.district = district;
     }
 
-    public List<Room> getRoom() {
-        return room;
+    public List<Room> getRooms() {
+        return rooms;
     }
 
-    public void setRoom(List<Room> room) {
-        this.room = room;
+    public void setRooms(List<Room> rooms) {
+        this.rooms = rooms;
+    }
+
+    public Double getValueByDistricts() {
+        return valueByDistricts;
+    }
+
+    public void setValueByDistricts(String districts) {
+        District mapDistrict = new District();
+        this.valueByDistricts = mapDistrict.getMapDistricts().get(districts);
     }
 }
