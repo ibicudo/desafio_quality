@@ -29,12 +29,12 @@ public class CalculatorController {
         return ResponseEntity.status(200).body(calculatorService.calculatePriceHouse(houseDTO));
     }
 
-    @PostMapping("/biggesteRoom") //US 0003
+    @PostMapping("/determineBiggesteRoom") //US 0003
     public ResponseEntity<RoomAreaDTO> determineBiggestRoom (@RequestBody @Valid HouseDTO houseDTO){
         return ResponseEntity.status(200).body(calculatorService.determineTheBiggestRoom(houseDTO));
     }
 
-    @PostMapping("/areaRooms") //US 0004
+    @PostMapping("/calculateAreaRooms") //US 0004
     public List<RoomAreaDTO> calculateAreaRooms (@RequestBody @Valid HouseDTO houseDTO){
         return calculatorService.calculateAreaRooms(houseDTO);
     }

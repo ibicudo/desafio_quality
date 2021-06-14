@@ -61,7 +61,7 @@ public class CalculatorServiceIntegrationTest {
                 getRoom("Cozinha", 4.0, 3.0) +
                 "]}";
         this.mockMvc.perform(
-                post("/houses/biggesteRoom")
+                post("/houses/determineBiggesteRoom")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request))
                 .andDo(print()).andExpect(status().isOk())
@@ -81,9 +81,10 @@ public class CalculatorServiceIntegrationTest {
                 post("/houses/calculateAreaRooms")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request))
-                .andDo(print()).andExpect(status().isOk());
-                //.andExpect(content().string(containsString("16")));
-                //.andExpect(jsonPath("$.[1].area").value(20.0))
+                .andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].area").value(16.0))
+                .andExpect(jsonPath("$.[1].area").value(20.0))
+                .andExpect(jsonPath("$.[2].area").value(12.0));
                 //.andExpect(jsonPath("$.[2].area").value(12.0));
     }
 
