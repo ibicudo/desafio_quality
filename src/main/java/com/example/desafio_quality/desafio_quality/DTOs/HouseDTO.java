@@ -1,5 +1,6 @@
-package com.example.desafio_quality.desafio_quality.models;
+package com.example.desafio_quality.desafio_quality.DTOs;
 
+import com.example.desafio_quality.desafio_quality.models.Room;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.validation.annotation.Validated;
 
@@ -8,7 +9,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 
 @Validated
-public class House {
+public class HouseDTO {
 
     @NotNull
     @NotBlank
@@ -31,7 +32,8 @@ public class House {
     @JsonIgnore
     private Double valueByDistricts;
 
-    public House() {
+    public HouseDTO() {
+
     }
 
     public String getName() {
@@ -58,12 +60,4 @@ public class House {
         this.rooms = rooms;
     }
 
-    public Double getValueByDistricts() {
-        return valueByDistricts;
-    }
-
-    public void setValueByDistricts(String districts) {
-        District mapDistrict = new District();
-        this.valueByDistricts = mapDistrict.getMapDistricts().get(districts);
-    }
 }

@@ -1,39 +1,44 @@
 package com.example.desafio_quality.desafio_quality.Services;
 
 import com.example.desafio_quality.desafio_quality.DTOs.HouseAreaDTO;
+import com.example.desafio_quality.desafio_quality.DTOs.HousePriceDTO;
 import com.example.desafio_quality.desafio_quality.DTOs.RoomAreaDTO;
-import com.example.desafio_quality.desafio_quality.models.House;
+import com.example.desafio_quality.desafio_quality.DTOs.HouseDTO;
+import com.example.desafio_quality.desafio_quality.exception.DistrictNotFoundException;
 import com.example.desafio_quality.desafio_quality.models.Room;
-import com.example.desafio_quality.desafio_quality.repositories.CalculatorRepository;
+import com.example.desafio_quality.desafio_quality.repositories.DistrictRepository;
 import com.example.desafio_quality.desafio_quality.services.CalculatorService;
+import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.security.DigestException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @SpringBootTest
-@AutoConfigureMockMvc
 public class CalculatorServiceTest {
 
-    @MockBean
-    private CalculatorRepository calculatorRepository;
 
     @Autowired
     private CalculatorService calculatorService;
 
-    House house;
+    @Autowired
+    private DistrictRepository districtRepository;
+
+    HouseDTO houseDTO;
 
     @BeforeEach
     public void setUp (){
-        this.house = new House();
+        this.houseDTO = new HouseDTO();
         List<Room> listRooms = new ArrayList<>();
         Room roomA = new Room();
         roomA.setName("Quarto");
@@ -48,15 +53,15 @@ public class CalculatorServiceTest {
         listRooms.add(roomB);
 
         Room roomC = new Room();
-        roomC.setName("Sala");
+        roomC.setName("Cozinha");
         roomC.setLength(3.0);
         roomC.setWidth(4.0);
         listRooms.add(roomC);
 
 
-        house.setName("Apartamento em Barueri");
-        house.setDistrict("Tupancy");
-        house.setRooms(listRooms);
+        houseDTO.setName("Apartamento em Barueri");
+        houseDTO.setDistrict("Tupancy");
+        houseDTO.setRooms(listRooms);
     }
 
     @Test
@@ -64,12 +69,10 @@ public class CalculatorServiceTest {
         //Arrange
         HouseAreaDTO houseAreaExpeted = new HouseAreaDTO();
         houseAreaExpeted.setArea(48.0);
-        houseAreaExpeted.setName(this.house.getName());
-
-        Mockito.when(calculatorRepository.calculateArea(Mockito.any(House.class))).thenReturn(houseAreaExpeted);
+        houseAreaExpeted.setName("Apartamento em Barueri");
 
         //act
-        HouseAreaDTO houseAreaCalculated = calculatorService.calculateTotalArea(this.house);
+        HouseAreaDTO houseAreaCalculated = calculatorService.calculateTotalArea(this.houseDTO);
 
         //Assert
         Assertions.assertEquals(houseAreaExpeted.getArea() , houseAreaCalculated.getArea());
@@ -77,16 +80,14 @@ public class CalculatorServiceTest {
     }
 
     @Test
-    void shouldCalculateWrongtTotalArea() throws Exception{
+    void shouldCalculateWrongTotalArea() throws Exception{
         //Arrange
         HouseAreaDTO houseAreaExpeted = new HouseAreaDTO();
         houseAreaExpeted.setArea(45.0);
-        houseAreaExpeted.setName(this.house.getName());
-
-        Mockito.when(calculatorRepository.calculateArea(Mockito.any(House.class))).thenReturn(houseAreaExpeted);
+        houseAreaExpeted.setName("Apartamento em Barueri");
 
         //act
-        HouseAreaDTO houseAreaCalculated = calculatorService.calculateTotalArea(this.house);
+        HouseAreaDTO houseAreaCalculated = calculatorService.calculateTotalArea(this.houseDTO);
 
         //Assert
         Assertions.assertNotEquals(houseAreaExpeted.getArea() , houseAreaCalculated.getArea());
@@ -94,16 +95,62 @@ public class CalculatorServiceTest {
     }
 
     @Test
-    void shouldDetermineRightRoom() {
+    void shouldCalculateRightPrice (){
+        //Arrange
+        HousePriceDTO housePriceDTOExpected = new HousePriceDTO();
+        housePriceDTOExpected.setPrice(240000.0);
+        housePriceDTOExpected.setName("Apartamento em Barueri");
+        housePriceDTOExpected.setDistrict("Tupancy");
+
+        //act
+        HousePriceDTO housePriceDTOCalculated = calculatorService.calculatePriceHouse(this.houseDTO);
+
+        //Assert
+        Assertions.assertEquals(housePriceDTOExpected.getPrice(), housePriceDTOCalculated.getPrice());
+        Assertions.assertEquals(housePriceDTOExpected.getDistrict(), housePriceDTOCalculated.getDistrict());
+
+    }
+
+
+    @Test
+    void shouldCalculatePriceDistrictDoesNotExist (){
+
+
+        this.houseDTO.setDistrict("Jardim de Abril");
+
+        assertThrows(DistrictNotFoundException.class, () -> {
+            HousePriceDTO housePriceDTOCalculated = calculatorService.calculatePriceHouse(this.houseDTO);
+        });
+
+    }
+
+    @Test
+    void shouldCalculateWrongPrice (){
+        //Arrange
+        HousePriceDTO housePriceDTOExpected = new HousePriceDTO();
+        housePriceDTOExpected.setPrice(288000.0);
+        housePriceDTOExpected.setName("Apartamento em Osasco");
+        housePriceDTOExpected.setDistrict("Centro");
+
+        //act
+        HousePriceDTO housePriceDTOCalculated = calculatorService.calculatePriceHouse(this.houseDTO);
+
+        //Assert
+        Assertions.assertNotEquals(housePriceDTOExpected.getPrice(), housePriceDTOCalculated.getPrice());
+        Assertions.assertNotEquals(housePriceDTOExpected.getDistrict(), housePriceDTOCalculated.getDistrict());
+
+    }
+
+
+    @Test
+    void shouldDetermineRightBiggestRoom() {
         //Arrange
         RoomAreaDTO roomAreaDTOExpected = new RoomAreaDTO();
         roomAreaDTOExpected.setArea(20.0);
-        roomAreaDTOExpected.setName(this.house.getRooms().get(1).getName());
-
-        Mockito.when(calculatorRepository.determineTheBiggestRoom(Mockito.any(House.class))).thenReturn(roomAreaDTOExpected);
+        roomAreaDTOExpected.setName("Sala");
 
         //act
-        RoomAreaDTO roomAreaDTOCalculated = calculatorService.determineTheBiggestRoom(this.house);
+        RoomAreaDTO roomAreaDTOCalculated = calculatorService.determineTheBiggestRoom(this.houseDTO);
 
         //Assert
         Assertions.assertEquals(roomAreaDTOExpected.getName(), roomAreaDTOCalculated.getName());
@@ -111,22 +158,75 @@ public class CalculatorServiceTest {
     }
 
     @Test
-    void shouldDetermineWrongRoom() {
+    void shouldDetermineWrongBiggestRoom() {
         //Arrange
         RoomAreaDTO roomAreaDTOExpected = new RoomAreaDTO();
         roomAreaDTOExpected.setArea(10.0);
         roomAreaDTOExpected.setName("sala");
 
-        Mockito.when(calculatorRepository.determineTheBiggestRoom(Mockito.any(House.class))).thenReturn(roomAreaDTOExpected);
-
         //act
-        RoomAreaDTO roomAreaDTOCalculated = calculatorService.determineTheBiggestRoom(this.house);
+        RoomAreaDTO roomAreaDTOCalculated = calculatorService.determineTheBiggestRoom(this.houseDTO);
 
         //Assert
         Assertions.assertNotEquals(roomAreaDTOExpected.getArea(), roomAreaDTOCalculated.getArea());
         Assertions.assertNotEquals(roomAreaDTOExpected.getName(), roomAreaDTOCalculated.getName());
     }
 
+    @Test
+    void shouldDetermineRightAreaRooms(){
+        //Arrange
+        List<RoomAreaDTO> listRoomsAreasDTOExpeted = new ArrayList<>();
+        RoomAreaDTO quarto = new RoomAreaDTO();
+        quarto.setName("Quarto");
+        quarto.setArea(16.0);
+
+        RoomAreaDTO cozinha = new RoomAreaDTO();
+        cozinha.setName("Sala");
+        cozinha.setArea(20.0);
+
+        RoomAreaDTO banheiro = new RoomAreaDTO();
+        banheiro.setName("Cozinha");
+        banheiro.setArea(12.0);
+
+        listRoomsAreasDTOExpeted.add(quarto);
+        listRoomsAreasDTOExpeted.add(cozinha);
+        listRoomsAreasDTOExpeted.add(banheiro);
+
+        //act
+        List<RoomAreaDTO> listRoomsAreasDTOCalculated = calculatorService.calculateAreaRooms(this.houseDTO);
+
+        //Assert TODO usar assert to collections
+        Assertions.assertEquals(listRoomsAreasDTOExpeted.get(0).getArea(), listRoomsAreasDTOCalculated.get(0).getArea());
+        Assertions.assertEquals(listRoomsAreasDTOExpeted.get(1).getArea(), listRoomsAreasDTOCalculated.get(1).getArea());
+        Assertions.assertEquals(listRoomsAreasDTOExpeted.get(2).getArea(), listRoomsAreasDTOCalculated.get(2).getArea());
+    }
+
+    @Test
+    void shouldDetermineWrongAreaRooms(){
+        //Arrange
+        List<RoomAreaDTO> listRoomsAreasDTOExpeted = new ArrayList<>();
+        RoomAreaDTO quarto = new RoomAreaDTO();
+        quarto.setName("Quarto");
+        quarto.setArea(20.0);
+
+        RoomAreaDTO cozinha = new RoomAreaDTO();
+        cozinha.setName("Sala");
+        cozinha.setArea(15.0);
+
+        RoomAreaDTO banheiro = new RoomAreaDTO();
+        banheiro.setName("Cozinha");
+        banheiro.setArea(10.0);
+
+        listRoomsAreasDTOExpeted.add(quarto);
+        listRoomsAreasDTOExpeted.add(cozinha);
+        listRoomsAreasDTOExpeted.add(banheiro);
+
+        //act
+        List<RoomAreaDTO> listRoomsAreasDTOCalculated = calculatorService.calculateAreaRooms(this.houseDTO);
+
+        //Assert TODO usar assert to collections
+        Assertions.assertNotEquals(listRoomsAreasDTOExpeted.get(0).getArea(), listRoomsAreasDTOCalculated.get(0).getArea());
+    }
 
 
 }
