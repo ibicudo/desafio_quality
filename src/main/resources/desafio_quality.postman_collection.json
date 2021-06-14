@@ -12,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"Apartamento em Barueri\",\n    \"district\": \"Tupancy\",\n    \"rooms\":[\n        {\n            \"name\": \"Cozinha\",\n            \"width\": 4.0,\n            \"length\": 4.0\n        },\n        {\n            \"name\": \"Quarto\",\n            \"width\": 4.0,\n            \"length\": 5.0\n        },\n        {\n            \"name\": \"Banheiro\",\n            \"width\": 4.0,\n            \"length\": 3.0\n        }\n    ]\n}",
+					"raw": "{\n    \"name\": \"Apartamento em Barueri\",\n    \"district\": \"Tupancy\",\n    \"rooms\":[\n        {\n            \"name\": \"Quarto\",\n            \"width\": 4.0,\n            \"length\": 4.0\n        },\n        {\n            \"name\": \"Sala\",\n            \"width\": 4.0,\n            \"length\": 5.0\n        },\n        {\n            \"name\": \"Cozinha\",\n            \"width\": 4.0,\n            \"length\": 3.0\n        }\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -28,7 +28,7 @@
 					"port": "8080",
 					"path": [
 						"houses",
-						"calculateArea"
+						"calculateTotalArea"
 					]
 				}
 			},
