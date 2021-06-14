@@ -1,6 +1,5 @@
 package com.example.desafio_quality.desafio_quality.DTOs;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.*;
@@ -11,7 +10,7 @@ public class RoomDTO {
     @NotNull
     @NotBlank
     @NotEmpty(message = "O campo não pode estar vazio")
-    @Pattern(regexp = "[A-Z].*", message = "O nome da propriedade deve começar com uma letra maiúscula")
+    @Pattern(regexp = "[A-Z].*", message = "O nome do cômodo deve começar com uma letra maiúscula.")
     @Size(max=30 , message="O comprimento do cômodo não pode exceder 30 caracteres.")
     private String name;
 
@@ -24,8 +23,6 @@ public class RoomDTO {
     @DecimalMax(value="33", message="O comprimento máximo permitido por cômodo é de 33 metros.")
     private Double length;
 
-    @JsonIgnore
-    private Double valueByMeter;
 
     public RoomDTO() {
     }
