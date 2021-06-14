@@ -1,0 +1,107 @@
+{
+	"info": {
+		"_postman_id": "5431277d-8062-4678-8fcc-0e2c88954b1b",
+		"name": "desafio_quality",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "US 0001 - calculateTotalArea",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Apartamento em Osasco\",\n    \"district\": \"Centro\",\n    \"rooms\":[\n        {\n            \"name\": \"Cozinha\",\n            \"width\": 4.0,\n            \"length\": 4.0\n        },\n        {\n            \"name\": \"Quarto\",\n            \"width\": 4.0,\n            \"length\": 5.0\n        },\n        {\n            \"name\": \"Banheiro\",\n            \"width\": 4.0,\n            \"length\": 3.0\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/houses/calculateArea",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"houses",
+						"calculateArea"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "US 0002- calculatePrice",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Apartamento em Osasco\",\n    \"district\": \"Centro\",\n    \"rooms\":[\n        {\n            \"name\": \"Cozinha\",\n            \"width\": 4.0,\n            \"length\": 4.0\n        },\n        {\n            \"name\": \"Quarto\",\n            \"width\": 4.0,\n            \"length\": 5.0\n        },\n        {\n            \"name\": \"Banheiro\",\n            \"width\": 4.0,\n            \"length\": 3.0\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/houses/calculatePrice",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"houses",
+						"calculatePrice"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "US 0003 - determineBiggestRoom",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/houses/cdetermineBiggestRoom",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"houses",
+						"cdetermineBiggestRoom"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "US 0004 - calculateAreaRooms",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/houses/sizeRooms",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"houses",
+						"sizeRooms"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
