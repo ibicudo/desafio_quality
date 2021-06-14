@@ -4,7 +4,7 @@ import com.example.desafio_quality.desafio_quality.DTOs.HouseAreaDTO;
 import com.example.desafio_quality.desafio_quality.DTOs.HousePriceDTO;
 import com.example.desafio_quality.desafio_quality.DTOs.RoomAreaDTO;
 import com.example.desafio_quality.desafio_quality.DTOs.HouseDTO;
-import com.example.desafio_quality.desafio_quality.models.Room;
+import com.example.desafio_quality.desafio_quality.DTOs.RoomDTO;
 import com.example.desafio_quality.desafio_quality.repositories.DistrictRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,10 +23,10 @@ public class CalculatorServiceImpl implements CalculatorService {
     public HouseAreaDTO calculateTotalArea(HouseDTO houseDTO) {
         HouseAreaDTO houseAreaDTO = new HouseAreaDTO();
         Double area = 0.0;
-        List<Room> listRooms = houseDTO.getRooms();
+        List<RoomDTO> listRoomDTOS = houseDTO.getRooms();
 
-        for(Room room : listRooms){
-            area = area + (room.getLength()*room.getWidth());
+        for(RoomDTO roomDTO : listRoomDTOS){
+            area = area + (roomDTO.getLength()* roomDTO.getWidth());
         }
         houseAreaDTO.setName(houseDTO.getName());
         houseAreaDTO.setArea(area);
@@ -50,17 +50,17 @@ public class CalculatorServiceImpl implements CalculatorService {
 
     @Override
     public RoomAreaDTO determineTheBiggestRoom(HouseDTO houseDTO) {
-        List<Room> listRoom = houseDTO.getRooms();
+        List<RoomDTO> listRoomDTO = houseDTO.getRooms();
         List<Double> areaRoom = new ArrayList<>();
         RoomAreaDTO roomAreaDTO = new RoomAreaDTO();
 
-        for(Room room: listRoom){
-            areaRoom.add(room.getWidth()*room.getLength());
+        for(RoomDTO roomDTO : listRoomDTO){
+            areaRoom.add(roomDTO.getWidth()* roomDTO.getLength());
         }
         Double area = Collections.max(areaRoom);
         int index = areaRoom.indexOf(area);
 
-        roomAreaDTO.setName(listRoom.get(index).getName()) ;
+        roomAreaDTO.setName(listRoomDTO.get(index).getName()) ;
         roomAreaDTO.setArea(area);
 
         return roomAreaDTO;
@@ -68,14 +68,14 @@ public class CalculatorServiceImpl implements CalculatorService {
 
     @Override
     public List<RoomAreaDTO> calculateAreaRooms (HouseDTO houseDTO) {
-        List<Room> listRooms = houseDTO.getRooms();
+        List<RoomDTO> listRoomDTOS = houseDTO.getRooms();
         RoomAreaDTO roomAreaDTO;
         List<RoomAreaDTO> listRoomsAreaDTO = new ArrayList<>();
 
-        for(Room room: listRooms){
+        for(RoomDTO roomDTO : listRoomDTOS){
             roomAreaDTO = new RoomAreaDTO();
-            roomAreaDTO.setName(room.getName());
-            roomAreaDTO.setArea(room.getLength()*room.getWidth());
+            roomAreaDTO.setName(roomDTO.getName());
+            roomAreaDTO.setArea(roomDTO.getLength()* roomDTO.getWidth());
             listRoomsAreaDTO.add(roomAreaDTO);
         }
 

@@ -1,23 +1,20 @@
-package com.example.desafio_quality.desafio_quality.Services;
+package com.example.desafio_quality.desafio_quality.Services.UnitTests;
 
 import com.example.desafio_quality.desafio_quality.DTOs.HouseAreaDTO;
 import com.example.desafio_quality.desafio_quality.DTOs.HousePriceDTO;
 import com.example.desafio_quality.desafio_quality.DTOs.RoomAreaDTO;
 import com.example.desafio_quality.desafio_quality.DTOs.HouseDTO;
 import com.example.desafio_quality.desafio_quality.exception.DistrictNotFoundException;
-import com.example.desafio_quality.desafio_quality.models.Room;
+import com.example.desafio_quality.desafio_quality.DTOs.RoomDTO;
 import com.example.desafio_quality.desafio_quality.repositories.DistrictRepository;
 import com.example.desafio_quality.desafio_quality.services.CalculatorService;
-import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.security.DigestException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -39,29 +36,29 @@ public class CalculatorServiceTest {
     @BeforeEach
     public void setUp (){
         this.houseDTO = new HouseDTO();
-        List<Room> listRooms = new ArrayList<>();
-        Room roomA = new Room();
-        roomA.setName("Quarto");
-        roomA.setLength(4.0);
-        roomA.setWidth(4.0);
-        listRooms.add(roomA);
+        List<RoomDTO> listRoomDTOS = new ArrayList<>();
+        RoomDTO roomDTOA = new RoomDTO();
+        roomDTOA.setName("Quarto");
+        roomDTOA.setLength(4.0);
+        roomDTOA.setWidth(4.0);
+        listRoomDTOS.add(roomDTOA);
 
-        Room roomB = new Room();
-        roomB.setName("Sala");
-        roomB.setLength(5.0);
-        roomB.setWidth(4.0);
-        listRooms.add(roomB);
+        RoomDTO roomDTOB = new RoomDTO();
+        roomDTOB.setName("Sala");
+        roomDTOB.setLength(5.0);
+        roomDTOB.setWidth(4.0);
+        listRoomDTOS.add(roomDTOB);
 
-        Room roomC = new Room();
-        roomC.setName("Cozinha");
-        roomC.setLength(3.0);
-        roomC.setWidth(4.0);
-        listRooms.add(roomC);
+        RoomDTO roomDTOC = new RoomDTO();
+        roomDTOC.setName("Cozinha");
+        roomDTOC.setLength(3.0);
+        roomDTOC.setWidth(4.0);
+        listRoomDTOS.add(roomDTOC);
 
 
         houseDTO.setName("Apartamento em Barueri");
         houseDTO.setDistrict("Tupancy");
-        houseDTO.setRooms(listRooms);
+        houseDTO.setRooms(listRoomDTOS);
     }
 
     @Test
@@ -114,7 +111,6 @@ public class CalculatorServiceTest {
 
     @Test
     void shouldCalculatePriceDistrictDoesNotExist (){
-
 
         this.houseDTO.setDistrict("Jardim de Abril");
 

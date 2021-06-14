@@ -1,4 +1,4 @@
-package com.example.desafio_quality.desafio_quality.models;
+package com.example.desafio_quality.desafio_quality.DTOs;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.validation.annotation.Validated;
@@ -6,7 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.*;
 
 @Validated
-public class Room {
+public class RoomDTO {
 
     @NotNull
     @NotBlank
@@ -27,7 +27,7 @@ public class Room {
     @JsonIgnore
     private Double valueByMeter;
 
-    public Room() {
+    public RoomDTO() {
     }
 
     public String getName() {

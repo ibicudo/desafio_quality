@@ -1,6 +1,5 @@
 package com.example.desafio_quality.desafio_quality.DTOs;
 
-import com.example.desafio_quality.desafio_quality.models.Room;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.validation.annotation.Validated;
 
@@ -27,7 +26,7 @@ public class HouseDTO {
     @Valid
     @NotNull(message = "É necessário ter uma lista de cômodos")
     @Size(min = 1, message = "É necessário ter pelo menos um cômodo na lista")
-    private List<Room> rooms;
+    private List<RoomDTO> roomDTOS;
 
     @JsonIgnore
     private Double valueByDistricts;
@@ -52,12 +51,12 @@ public class HouseDTO {
         this.district = district;
     }
 
-    public List<Room> getRooms() {
-        return rooms;
+    public List<RoomDTO> getRooms() {
+        return roomDTOS;
     }
 
-    public void setRooms(List<Room> rooms) {
-        this.rooms = rooms;
+    public void setRooms(List<RoomDTO> roomDTOS) {
+        this.roomDTOS = roomDTOS;
     }
 
 }
