@@ -85,7 +85,6 @@ public class CalculatorServiceIntegrationTest {
                 .andExpect(jsonPath("$.[0].area").value(16.0))
                 .andExpect(jsonPath("$.[1].area").value(20.0))
                 .andExpect(jsonPath("$.[2].area").value(12.0));
-                //.andExpect(jsonPath("$.[2].area").value(12.0));
     }
 
     private String getRoom(String name, double width, double length) {

@@ -1,11 +1,7 @@
 package com.example.desafio_quality.desafio_quality.Services.UnitTests;
 
-import com.example.desafio_quality.desafio_quality.DTOs.HouseAreaDTO;
-import com.example.desafio_quality.desafio_quality.DTOs.HousePriceDTO;
-import com.example.desafio_quality.desafio_quality.DTOs.RoomAreaDTO;
-import com.example.desafio_quality.desafio_quality.DTOs.HouseDTO;
+import com.example.desafio_quality.desafio_quality.DTOs.*;
 import com.example.desafio_quality.desafio_quality.exception.DistrictNotFoundException;
-import com.example.desafio_quality.desafio_quality.DTOs.RoomDTO;
 import com.example.desafio_quality.desafio_quality.repositories.DistrictRepository;
 import com.example.desafio_quality.desafio_quality.services.CalculatorService;
 import org.junit.jupiter.api.Assertions;
@@ -17,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
@@ -108,18 +103,6 @@ public class CalculatorServiceTest {
 
     }
 
-
-    @Test
-    void shouldCalculatePriceDistrictDoesNotExist (){
-
-        this.houseDTO.setDistrict("Jardim de Abril");
-
-        assertThrows(DistrictNotFoundException.class, () -> {
-            HousePriceDTO housePriceDTOCalculated = calculatorService.calculatePriceHouse(this.houseDTO);
-        });
-
-    }
-
     @Test
     void shouldCalculateWrongPrice (){
         //Arrange
@@ -137,6 +120,17 @@ public class CalculatorServiceTest {
 
     }
 
+
+    @Test
+    void shouldCalculatePriceDistrictDoesNotExist (){
+
+        this.houseDTO.setDistrict("Jardim de Abril");
+
+        assertThrows(DistrictNotFoundException.class, () -> {
+            HousePriceDTO housePriceDTOCalculated = calculatorService.calculatePriceHouse(this.houseDTO);
+        });
+
+    }
 
     @Test
     void shouldDetermineRightBiggestRoom() {
@@ -158,7 +152,7 @@ public class CalculatorServiceTest {
         //Arrange
         RoomAreaDTO roomAreaDTOExpected = new RoomAreaDTO();
         roomAreaDTOExpected.setArea(10.0);
-        roomAreaDTOExpected.setName("sala");
+        roomAreaDTOExpected.setName("Cozinha");
 
         //act
         RoomAreaDTO roomAreaDTOCalculated = calculatorService.determineTheBiggestRoom(this.houseDTO);
@@ -191,7 +185,7 @@ public class CalculatorServiceTest {
         //act
         List<RoomAreaDTO> listRoomsAreasDTOCalculated = calculatorService.calculateAreaRooms(this.houseDTO);
 
-        //Assert TODO usar assert to collections
+        //Assert
         Assertions.assertEquals(listRoomsAreasDTOExpeted.get(0).getArea(), listRoomsAreasDTOCalculated.get(0).getArea());
         Assertions.assertEquals(listRoomsAreasDTOExpeted.get(1).getArea(), listRoomsAreasDTOCalculated.get(1).getArea());
         Assertions.assertEquals(listRoomsAreasDTOExpeted.get(2).getArea(), listRoomsAreasDTOCalculated.get(2).getArea());
@@ -220,7 +214,7 @@ public class CalculatorServiceTest {
         //act
         List<RoomAreaDTO> listRoomsAreasDTOCalculated = calculatorService.calculateAreaRooms(this.houseDTO);
 
-        //Assert TODO usar assert to collections
+        //Assert
         Assertions.assertNotEquals(listRoomsAreasDTOExpeted.get(0).getArea(), listRoomsAreasDTOCalculated.get(0).getArea());
     }
 
